@@ -459,6 +459,28 @@ export default function App() {
                     <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} className={`w-full text-xs p-2.5 border rounded-lg focus:ring-2 focus:ring-cyan-500 transition outline-none ${isDarkMode ? 'border-slate-800 bg-slate-950 text-white' : 'border-slate-200 bg-white text-slate-800'}`} />
                   </div>
                 </div>
+                {/* Quick date range buttons */}
+                <div className="grid grid-cols-2 gap-1.5 pt-1">
+                  {[{ label: '7 Hari Terakhir', days: 7 }, { label: '30 Hari Terakhir', days: 30 }].map(({ label, days }) => {
+                    const end = endDate || new Date().toISOString().split('T')[0];
+                    const start = new Date(new Date(end).setDate(new Date(end).getDate() - days + 1)).toISOString().split('T')[0];
+                    const isActive = startDate === start && endDate === end;
+                    return (
+                      <button
+                        key={days}
+                        type="button"
+                        onClick={() => { setStartDate(start); setEndDate(end); }}
+                        className={`text-[10px] font-semibold px-2 py-2 rounded-lg border transition-all cursor-pointer ${
+                          isActive
+                            ? isDarkMode ? 'bg-cyan-600 text-white border-cyan-500' : 'bg-cyan-100 text-cyan-800 border-cyan-300'
+                            : isDarkMode ? 'bg-slate-800 text-slate-400 border-slate-700 hover:bg-slate-700 hover:text-white' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-100'
+                        }`}
+                      >
+                        {label}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
 
               {/* Search */}
